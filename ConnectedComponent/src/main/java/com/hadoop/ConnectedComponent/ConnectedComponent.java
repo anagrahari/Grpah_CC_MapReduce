@@ -240,8 +240,9 @@ public class ConnectedComponent extends Configured implements Tool {
 
 	/** Main driver for Connected Components MapReduce program */
 	public int run(String[] args) throws Exception {
-
+		boolean first_time = true;
 		Configuration conf = new Configuration();
+		
 		for(String filename: filenames)	{
 			String path="logs/CC-"+filename;
 			FileSystem fs1 = FileSystem.get(URI.create(path),conf);
@@ -249,6 +250,7 @@ public class ConnectedComponent extends Configured implements Tool {
 			
 			int iterationCount = 0;
 			int numReducer = 0;
+			int fixedNumReducer = 1;
 			boolean flagStop = false;
 			long lastIterationEdges = 0;
 			bw.write("********************************************************\n");
@@ -263,7 +265,13 @@ public class ConnectedComponent extends Configured implements Tool {
 					input = "output/CC-"+filename+"-" + iterationCount;
 				
 				String output = "output/CC-"+filename+"-" + (iterationCount + 1);
-				Job job = getJob(args, numReducer,filename);
+				Job job;
+				if (first_time) {
+					job = getJob(args, 0,filename);
+					first_time = false;
+				} else {
+					job = getJob(args, fixedNumReducer,filename);
+				}
 				FileInputFormat.addInputPath(job, new Path(input));
 				FileOutputFormat.setOutputPath(job, new Path(output));
 				job.waitForCompletion(true);
