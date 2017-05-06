@@ -1,0 +1,12 @@
+********************************************************
+Processing File: connected_input
+************Iteration: 0 ***********
+Total weight of the MST: 0
+Total Input Edges: 50000
+Total number of reduced edges: 0
+************Iteration: 1 ***********
+Total weight of the MST: 225068549
+Total Input Edges: 50000
+Total number of reduced edges: 49781
+Total Iterations: 1
+Time Taken: 36.422 seconds
